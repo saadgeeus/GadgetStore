@@ -1,0 +1,25 @@
+<project name="GadgetStore" basedir="." default="war">
+    <property name="src" location="src"/>
+    <property name="web" location="WebContent"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="classes" location="${build}/classes"/>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes}"/>
+        <javac srcdir="${src}" destdir="${classes}" includeantruntime="false"/>
+    </target>
+
+    <target name="war" depends="compile">
+        <mkdir dir="${dist}"/>
+        <war destfile="${dist}/GadgetStore.war" webxml="${web}/WEB-INF/web.xml">
+            <fileset dir="${web}"/>
+            <classes dir="${classes}"/>
+        </war>
+    </target>
+</project>
