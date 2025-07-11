@@ -1,30 +1,36 @@
 <project name="GadgetStore" basedir="." default="war">
-    <property name="src" location="src"/>
-    <property name="web" location="WebContent"/>
-    <property name="build" location="build"/>
-    <property name="dist" location="dist"/>
-    <property name="classes" location="${build}/classes"/>
 
-    <target name="clean">
-        <delete dir="${build}"/>
-        <delete dir="${dist}"/>
+    <property name="src" value="src"/>
+    <property name="web" value="web"/>
+    <property name="classes" value="build/classes"/>
+    <property name="lib" value="lib"/>
+    <property name="dist" value="dist"/>
+    <property name="warfile" value="${dist}/GadgetStore.war"/>
+
+    <target name="init">
+        <mkdir dir="${classes}"/>
+        <mkdir dir="${lib}"/>
+        <mkdir dir="${dist}"/>
+
+        <!-- Download servlet-api.jar if not already downloaded -->
+        <get src="https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/4.0.1/javax.servlet-api-4.0.1.jar"
+             dest="${lib}/servlet-api.jar"
+             skipexisting="true"/>
     </target>
 
-    <target name="compile">
-        <mkdir dir="${classes}"/>
+    <target name="compile" depends="init">
         <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
-          <classpath>
-            <fileset dir="lib" includes="*.jar"/>
-          </classpath>
+            <classpath>
+                <fileset dir="${lib}" includes="*.jar"/>
+            </classpath>
         </javac>
     </target>
 
-
     <target name="war" depends="compile">
-        <mkdir dir="${dist}"/>
-        <war destfile="${dist}/GadgetStore.war" webxml="${web}/WEB-INF/web.xml">
+        <war destfile="${warfile}" webxml="${web}/WEB-INF/web.xml">
             <fileset dir="${web}"/>
             <classes dir="${classes}"/>
         </war>
     </target>
+
 </project>
